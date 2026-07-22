@@ -20,4 +20,17 @@
     <string name="widget_description">Pro Controller connection and battery status</string>
     <string name="widget_refresh">Refresh</string>
     <string name="updated_at">Updated %1$s</string>
+    <string name="wireless_diagnostic_title">Android 16 wireless HID diagnostic</string>
+    <string name="run_wireless_diagnostic">Test wireless battery access</string>
+    <string name="wireless_idle">Ready. Connect the controller, then run the test.</string>
+    <string name="wireless_permission_required">Nearby devices permission is required.</string>
+    <string name="wireless_unavailable">This device has no Bluetooth adapter.</string>
+    <string name="wireless_bluetooth_off">Turn Bluetooth on and reconnect the controller.</string>
+    <string name="wireless_opening_profile">Opening Android’s internal HID Host profile…</string>
+    <string name="wireless_controller_not_found">No connected Pro Controller was returned by HID Host.</string>
+    <string name="wireless_requesting_report">Nintendo command sent. Waiting for a raw HID report…</string>
+    <string name="wireless_battery_received">Success: wireless battery data was decoded.</string>
+    <string name="wireless_no_report">The command was sent, but Samsung did not expose its response.</string>
+    <string name="wireless_error">Internal HID access failed. See the diagnostic detail below.</string>
+    <string name="wireless_raw_report">Raw report: %1$s</string>
 </resources>

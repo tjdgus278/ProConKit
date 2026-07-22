@@ -23,5 +23,6 @@ kotlin {
 
 dependencies {
   implementation(libs.kotlinx.coroutines.core)
+  implementation(libs.hidden.api.bypass)
   testImplementation(libs.junit)
 }

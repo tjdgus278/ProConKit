@@ -4,7 +4,7 @@ ProConKit is an open-source Android application and reusable SDK for the Nintend
 
 ## Download APK
 
-### [Download ProConKit v0.1.0 APK](https://github.com/tjdgus278/ProConKit/releases/download/v0.1.0/ProConKit-v0.1.0.apk)
+### [Download ProConKit v0.2.0-alpha01 APK](https://github.com/tjdgus278/ProConKit/releases/download/v0.2.0-alpha01/ProConKit-v0.2.0-alpha01.apk)
 
 You can also browse [all GitHub Releases](https://github.com/tjdgus278/ProConKit/releases). These early builds use Android debug signing and are intended for testing. A production signing process will be introduced before a stable release.
 
@@ -16,8 +16,15 @@ You can also browse [all GitHub Releases](https://github.com/tjdgus278/ProConKit
 - Shows connection, battery, and power state in a Material 3 app screen
 - Provides a resizable home-screen widget with manual and periodic refresh
 - Exposes the discovery and monitoring implementation from the `procon-core` Android library
+- Includes an experimental Android 12-16 wireless HID diagnostic that requests Nintendo's
+  device-info subcommand and reads feature report `0x02` through Android's hidden HID Host profile
 
-Android does not guarantee that every Bluetooth HID controller exposes battery data through `InputDevice`. When the system does not provide it, ProConKit reports the value as unavailable instead of guessing. Direct Nintendo HID protocol support is the next transport-layer milestone.
+Android does not guarantee that every Bluetooth HID controller exposes battery data through `InputDevice`. When the system does not provide it, ProConKit reports the value as unavailable instead of guessing. The experimental transport now tests direct Nintendo HID commands while keeping the framework value as its safe fallback.
+
+The Android 12-16 wireless diagnostic uses a non-SDK Android interface. It is intended for
+GitHub test builds, may vary by device manufacturer, and is not suitable for Google Play release.
+Android 17/API 37.1 introduces a supported public raw-HID API that will replace this compatibility
+path on newer devices.
 
 ## Modules
 
@@ -43,3 +50,5 @@ The project requires Android SDK 36+ and Java 17+; the checked-in Gradle wrapper
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+Third-party dependency notices are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

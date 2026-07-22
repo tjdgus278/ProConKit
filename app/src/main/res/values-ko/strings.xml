@@ -21,4 +21,17 @@
     <string name="widget_description">Pro 컨트롤러 연결 및 배터리 상태</string>
     <string name="widget_refresh">새로고침</string>
     <string name="updated_at">%1$s 업데이트</string>
+    <string name="wireless_diagnostic_title">Android 16 무선 HID 진단</string>
+    <string name="run_wireless_diagnostic">무선 배터리 접근 테스트</string>
+    <string name="wireless_idle">준비됨: 프로콘을 연결한 다음 테스트하세요.</string>
+    <string name="wireless_permission_required">주변 기기 권한이 필요합니다.</string>
+    <string name="wireless_unavailable">이 기기에 Bluetooth 어댑터가 없습니다.</string>
+    <string name="wireless_bluetooth_off">Bluetooth를 켜고 프로콘을 다시 연결하세요.</string>
+    <string name="wireless_opening_profile">Android 내부 HID Host 프로필을 여는 중…</string>
+    <string name="wireless_controller_not_found">HID Host에서 연결된 프로콘을 찾지 못했습니다.</string>
+    <string name="wireless_requesting_report">Nintendo 명령을 전송했습니다. 원시 HID 리포트를 기다리는 중…</string>
+    <string name="wireless_battery_received">성공: 무선 배터리 정보를 해석했습니다.</string>
+    <string name="wireless_no_report">명령은 전송됐지만 Samsung이 응답을 앱에 전달하지 않았습니다.</string>
+    <string name="wireless_error">내부 HID 접근에 실패했습니다. 아래 진단 정보를 확인하세요.</string>
+    <string name="wireless_raw_report">원시 리포트: %1$s</string>
 </resources>

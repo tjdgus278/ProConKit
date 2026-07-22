@@ -1,5 +1,10 @@
 package com.example.proconkit.ui.main
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +20,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,13 +34,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.core.content.ContextCompat
 import com.example.proconkit.R
 import com.example.proconkit.data.ControllerStateStore
 import com.example.proconkit.theme.ProConKitTheme
 import com.example.proconkit.widget.ControllerWidgetUpdater
 import com.proconkit.sdk.ControllerPowerState
+import com.proconkit.sdk.ExperimentalBluetoothHidMonitor
 import com.proconkit.sdk.ProControllerMonitor
 import com.proconkit.sdk.ProControllerState
+import com.proconkit.sdk.WirelessHidState
+import com.proconkit.sdk.WirelessHidStatus
 
 @Composable
 fun MainScreen(
@@ -46,6 +56,7 @@ fun MainScreen(
       val stateStore = ControllerStateStore(appContext)
       MainScreenViewModel(
         controllerMonitor = ProControllerMonitor(appContext),
+        wirelessHidMonitor = ExperimentalBluetoothHidMonitor(appContext),
         onStateChanged = { state ->
           stateStore.save(state)
           ControllerWidgetUpdater.updateAll(appContext, state)
@@ -53,8 +64,30 @@ fun MainScreen(
       )
     }
   val state by viewModel.uiState.collectAsStateWithLifecycle()
+  val wirelessState by viewModel.wirelessState.collectAsStateWithLifecycle()
+  val permissionLauncher =
+    rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+      if (granted) viewModel.startWirelessDiagnostic()
+    }
+  val startWirelessDiagnostic = {
+    if (
+      Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+        ContextCompat.checkSelfPermission(appContext, Manifest.permission.BLUETOOTH_CONNECT) !=
+          PackageManager.PERMISSION_GRANTED
+    ) {
+      permissionLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT)
+    } else {
+      viewModel.startWirelessDiagnostic()
+    }
+  }
 
-  MainScreen(state = state, onRefresh = viewModel::refresh, modifier = modifier)
+  MainScreen(
+    state = state,
+    wirelessState = wirelessState,
+    onRefresh = viewModel::refresh,
+    onWirelessDiagnostic = startWirelessDiagnostic,
+    modifier = modifier,
+  )
 }
 
 @Composable
@@ -62,6 +95,8 @@ internal fun MainScreen(
   state: ProControllerState,
   onRefresh: () -> Unit,
   modifier: Modifier = Modifier,
+  wirelessState: WirelessHidState = WirelessHidState(),
+  onWirelessDiagnostic: () -> Unit = {},
 ) {
   Column(
     modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()),
@@ -81,6 +116,8 @@ internal fun MainScreen(
     }
 
     ControllerStatusCard(state = state)
+
+    WirelessDiagnosticCard(state = wirelessState, onStart = onWirelessDiagnostic)
 
     Button(onClick = onRefresh, modifier = Modifier.fillMaxWidth()) {
       Text(stringResource(R.string.refresh_status))
@@ -103,6 +140,53 @@ internal fun MainScreen(
     }
   }
 }
+
+@Composable
+private fun WirelessDiagnosticCard(state: WirelessHidState, onStart: () -> Unit) {
+  Card(
+    modifier = Modifier.fillMaxWidth(),
+    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
+  ) {
+    Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+      Text(
+        text = stringResource(R.string.wireless_diagnostic_title),
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.Bold,
+      )
+      Text(
+        text = wirelessStatusLabel(state.status),
+        color = MaterialTheme.colorScheme.onTertiaryContainer,
+      )
+      state.detail?.let { detail ->
+        Text(text = detail, style = MaterialTheme.typography.bodySmall)
+      }
+      state.rawReportHex?.let { report ->
+        Text(
+          text = stringResource(R.string.wireless_raw_report, report),
+          style = MaterialTheme.typography.bodySmall,
+        )
+      }
+      OutlinedButton(onClick = onStart, modifier = Modifier.fillMaxWidth()) {
+        Text(stringResource(R.string.run_wireless_diagnostic))
+      }
+    }
+  }
+}
+
+@Composable
+private fun wirelessStatusLabel(status: WirelessHidStatus): String =
+  when (status) {
+    WirelessHidStatus.IDLE -> stringResource(R.string.wireless_idle)
+    WirelessHidStatus.PERMISSION_REQUIRED -> stringResource(R.string.wireless_permission_required)
+    WirelessHidStatus.BLUETOOTH_UNAVAILABLE -> stringResource(R.string.wireless_unavailable)
+    WirelessHidStatus.BLUETOOTH_OFF -> stringResource(R.string.wireless_bluetooth_off)
+    WirelessHidStatus.OPENING_PROFILE -> stringResource(R.string.wireless_opening_profile)
+    WirelessHidStatus.CONTROLLER_NOT_FOUND -> stringResource(R.string.wireless_controller_not_found)
+    WirelessHidStatus.REQUESTING_REPORT -> stringResource(R.string.wireless_requesting_report)
+    WirelessHidStatus.BATTERY_RECEIVED -> stringResource(R.string.wireless_battery_received)
+    WirelessHidStatus.NO_REPORT -> stringResource(R.string.wireless_no_report)
+    WirelessHidStatus.ERROR -> stringResource(R.string.wireless_error)
+  }
 
 @Composable
 private fun ControllerStatusCard(state: ProControllerState) {

@@ -50,5 +50,5 @@ jobs:
           "ProConKit-${GITHUB_REF_NAME}.apk"
           --repo "${GITHUB_REPOSITORY}"
           --title "ProConKit ${GITHUB_REF_NAME}"
-          --notes "Early installable development build. This APK uses Android debug signing and is intended for testing the controller status and home-screen widget MVP."
+          --notes "Experimental Android 16 wireless HID diagnostic build. Pair and connect a Nintendo Switch Pro Controller, grant Nearby devices permission, then tap Wireless battery access test. This GitHub APK uses Android debug signing and a non-SDK HID Host compatibility path."
           --prerelease
