@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Live controller state should be rediscovered, never restored from backup. -->
+    <exclude domain="sharedpref" path="controller_state.xml" />
+</full-backup-content>

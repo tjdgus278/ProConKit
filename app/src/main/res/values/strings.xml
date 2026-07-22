@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">ProConKit</string>
+    <string name="app_subtitle">Nintendo Switch Pro Controller at a glance</string>
+    <string name="pro_controller">Nintendo Switch Pro Controller</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="battery_percent">%1$d%%</string>
+    <string name="battery_unavailable">Battery unavailable</string>
+    <string name="battery_unavailable_short">—</string>
+    <string name="charging">Charging</string>
+    <string name="on_battery">On battery</string>
+    <string name="fully_charged">Fully charged</string>
+    <string name="not_charging">Connected to power · Not charging</string>
+    <string name="charging_unknown">Charging state unknown</string>
+    <string name="battery_api_unavailable">Battery data not exposed by Android</string>
+    <string name="connect_instruction">Pair or connect a Pro Controller, then refresh.</string>
+    <string name="refresh_status">Refresh controller status</string>
+    <string name="widget_title">Home screen widget</string>
+    <string name="widget_hint">Add the ProConKit widget to see connection, battery, and charging status without opening the app.</string>
+    <string name="widget_description">Pro Controller connection and battery status</string>
+    <string name="widget_refresh">Refresh</string>
+    <string name="updated_at">Updated %1$s</string>
+</resources>
