@@ -2,6 +2,10 @@
 
 ProConKit is an open-source Android application and reusable SDK for the Nintendo Switch Pro Controller. Its primary goal is to show connection, battery, and charging information at a glance from an Android home-screen widget.
 
+## Download
+
+Installable development APKs are available from [GitHub Releases](https://github.com/tjdgus278/ProConKit/releases). These early builds use Android debug signing and are intended for testing. A production signing process will be introduced before a stable release.
+
 ## Current MVP
 
 - Detects the official controller by Nintendo vendor/product ID or a compatible Android game-controller name
